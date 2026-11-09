@@ -20,6 +20,8 @@ public class SqliteDaoFactory extends DaoFactory {
     private static Connection conn;
     
     private ResponsavelDao responsavelDao;
+    private EspecieDao especieDao;
+    private RacaDao racaDao;
     
     public static Connection getConnection() {
         if (conn == null) {
@@ -43,12 +45,18 @@ public class SqliteDaoFactory extends DaoFactory {
 
     @Override
     public EspecieDao getEspecieDao() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (especieDao == null) {
+            especieDao = new SqliteEspecieDao();
+        }
+        return especieDao;
     }
 
     @Override
     public RacaDao getRacaDao() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (racaDao == null) {
+            racaDao = new SqliteRacaDao();
+        }
+        return racaDao;
     }
 
     @Override

@@ -17,5 +17,5 @@ public interface ResponsavelDao {
     
     public boolean alterar(Responsavel responsavel);
     
-    public boolean excluir(Entidade responsavel);
+    public boolean excluir(Responsavel responsavel);
 }

@@ -127,7 +127,7 @@ public class SqliteResponsavelDao implements ResponsavelDao {
     }
 
     @Override
-    public boolean excluir(Entidade responsavel) {
+    public boolean excluir(Responsavel responsavel) {
         try {
             Connection conn = SqliteDaoFactory.getConnection();
             PreparedStatement ps = conn.prepareStatement(SCRIPT_EXCLUIR);

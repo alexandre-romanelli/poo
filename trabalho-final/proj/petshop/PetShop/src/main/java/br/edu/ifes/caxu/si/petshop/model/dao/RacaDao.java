@@ -17,5 +17,5 @@ public interface RacaDao {
     
     public boolean alterar(Raca raca);
     
-    public boolean excluir(Entidade raca);
+    public boolean excluir(Raca raca);
 }

@@ -7,6 +7,11 @@ package br.edu.ifes.caxu.si.petshop.model;
 public class Especie implements Entidade {
     private int idEspecie;
     private String nome;
+    
+    public Especie(int idEspecie, String nome) {
+        this.idEspecie = idEspecie;
+        this.nome = nome;
+    }
 
     @Override
     public int getId() {
