@@ -1,29 +1,33 @@
-package br.edu.ifes.caxu.si.petshop;
+package br.edu.ifes.caxu.si.petshop.view;
 
-import br.edu.ifes.caxu.si.petshop.model.Pet;
 import br.edu.ifes.caxu.si.petshop.model.Responsavel;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
-import br.edu.ifes.caxu.si.petshop.view.PetTableModel;
+import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
+import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import java.util.ArrayList;
 
 /**
  *
- * @author alexandre
+ * @author alexr
  */
-public class PetShopMainFrame extends javax.swing.JFrame {
+public class FrameTabelaResponsaveis extends javax.swing.JFrame implements UtilFrameCallback {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PetShopMainFrame.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrameTabelaResponsaveis.class.getName());
     
-    private ArrayList<Pet> dadosPet;
+    private final ArrayList<Responsavel> listaResponsavel;
+    private final ResponsavelTableModel tableModel;
+    private Responsavel registroEmEdicao;
+    private final UtilConfirmedWrapper confirmado;
 
     /**
-     * Creates new form PetShopMainFrame
+     * Creates new form FrameTabelaResponsaveis
      */
-    public PetShopMainFrame() {
+    public FrameTabelaResponsaveis() {
         initComponents();
-        ArrayList<Responsavel> r = DaoFactory.getDaoFactory(DaoFactory.TIPO_SQLITE).getResponsavelDao().getLista();
-        System.out.println(r.size());
-        tablePet.setModel(new PetTableModel(dadosPet));
+        listaResponsavel = DaoFactory.getDefaultDaoFactory().getResponsavelDao().getLista();
+        tableModel = new ResponsavelTableModel(listaResponsavel);
+        tableResponsavel.setModel(tableModel);
+        confirmado = new UtilConfirmedWrapper();
     }
 
     /**
@@ -39,20 +43,20 @@ public class PetShopMainFrame extends javax.swing.JFrame {
         buttonNovo = new javax.swing.JButton();
         buttonAlterar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
-        buttonCadResponsavel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablePet = new javax.swing.JTable();
+        tableResponsavel = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cadastro de Responsáveis");
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(740, 38));
 
         buttonNovo.setText("Novo");
+        buttonNovo.addActionListener(this::buttonNovoActionPerformed);
 
         buttonAlterar.setText("Alterar");
-        buttonAlterar.addActionListener(this::buttonAlterarActionPerformed);
 
         buttonExcluir.setText("Excluir");
-
-        buttonCadResponsavel.setText("Cadastro de responsáveis");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -60,60 +64,61 @@ public class PetShopMainFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(buttonNovo)
+                .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonAlterar)
+                .addComponent(buttonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonExcluir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 359, Short.MAX_VALUE)
-                .addComponent(buttonCadResponsavel, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(buttonAlterar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                    .addComponent(buttonExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonCadResponsavel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(buttonAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        tablePet.setModel(new javax.swing.table.DefaultTableModel(
+        tableResponsavel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tablePet.setColumnSelectionAllowed(true);
-        tablePet.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tablePet);
-        tablePet.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableResponsavel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tableResponsavel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAlterarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonAlterarActionPerformed
+    private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
+        //Responsavel registro = listaResponsavel.get(tableResponsavel.getSelectedRow());
+        registroEmEdicao = new Responsavel(-1, "", "", "");
+        FrameRegistroResponsavel frameRegistroResponsavel = new FrameRegistroResponsavel(registroEmEdicao, confirmado, this);
+        frameRegistroResponsavel.setVisible(true);
+    }//GEN-LAST:event_buttonNovoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -137,16 +142,25 @@ public class PetShopMainFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new PetShopMainFrame().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FrameTabelaResponsaveis().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAlterar;
-    private javax.swing.JButton buttonCadResponsavel;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablePet;
+    private javax.swing.JTable tableResponsavel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void runCallback() {
+        if (confirmado.getConfirmed()) {
+            // recarrega tabela
+            listaResponsavel.clear();
+            listaResponsavel.addAll(DaoFactory.getDefaultDaoFactory().getResponsavelDao().getLista());
+            tableModel.fireTableDataChanged();
+        }
+    }
 }

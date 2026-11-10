@@ -30,6 +30,9 @@ public class SqliteResponsavelDao implements ResponsavelDao {
             "insert into responsavel (nome, telefone, endereco) "
             + "values (?, ?, ?)";
     
+    private static final String SCRIPT_OBTER_ID_GERADO =
+            "select last_insert_rowid()";
+    
     private static final String SCRIPT_ALTERAR =
             "update responsavel "
             + "set nome = ?, "
@@ -95,15 +98,23 @@ public class SqliteResponsavelDao implements ResponsavelDao {
             ps.setString(1, responsavel.getNome());
             ps.setString(2, responsavel.getTelefone());
             ps.setString(3, responsavel.getEndereco());
-            int resultado = ps.executeUpdate();
-            return resultado == 1;
+            ps.executeUpdate();
+            PreparedStatement psObterId = conn.prepareStatement(SCRIPT_OBTER_ID_GERADO);
+            ResultSet rs = psObterId.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                responsavel.setIdResponsavel(id);
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,
                     "Erro ao inserir registro de responsável.",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -115,15 +126,15 @@ public class SqliteResponsavelDao implements ResponsavelDao {
             ps.setString(2, responsavel.getTelefone());
             ps.setString(3, responsavel.getEndereco());
             ps.setInt(4, responsavel.getId());
-            int resultado = ps.executeUpdate();
-            return resultado == 1;
+            ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,
                     "Erro ao alterar registro de responsável.",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -132,15 +143,14 @@ public class SqliteResponsavelDao implements ResponsavelDao {
             Connection conn = SqliteDaoFactory.getConnection();
             PreparedStatement ps = conn.prepareStatement(SCRIPT_EXCLUIR);
             ps.setInt(1, responsavel.getId());
-            int resultado = ps.executeUpdate();
-            return resultado == 1;
+            ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,
                     "Erro ao excluir registro de responsável.",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-        return false;
     }
-    
 }
