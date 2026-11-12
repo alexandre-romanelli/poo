@@ -8,6 +8,12 @@ public class Raca implements Entidade {
     private int idRaca;
     private Especie especie;
     private String nome;
+    
+    public Raca(int idRaca, Especie especie, String nome) {
+        this.idRaca = idRaca;
+        this.especie = especie;
+        this.nome = nome;
+    }
 
     @Override
     public int getId() {

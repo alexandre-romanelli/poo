@@ -5,6 +5,7 @@ import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
 import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
 import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -55,8 +56,10 @@ public class FrameTabelaResponsaveis extends javax.swing.JFrame implements UtilF
         buttonNovo.addActionListener(this::buttonNovoActionPerformed);
 
         buttonAlterar.setText("Alterar");
+        buttonAlterar.addActionListener(this::buttonAlterarActionPerformed);
 
         buttonExcluir.setText("Excluir");
+        buttonExcluir.addActionListener(this::buttonExcluirActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -119,6 +122,31 @@ public class FrameTabelaResponsaveis extends javax.swing.JFrame implements UtilF
         FrameRegistroResponsavel frameRegistroResponsavel = new FrameRegistroResponsavel(registroEmEdicao, confirmado, this);
         frameRegistroResponsavel.setVisible(true);
     }//GEN-LAST:event_buttonNovoActionPerformed
+
+    private void buttonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAlterarActionPerformed
+        registroEmEdicao = listaResponsavel.get(tableResponsavel.getSelectedRow());
+        FrameRegistroResponsavel frameRegistroResponsavel = new FrameRegistroResponsavel(registroEmEdicao, confirmado, this);
+        frameRegistroResponsavel.setVisible(true);
+    }//GEN-LAST:event_buttonAlterarActionPerformed
+
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        int posAtual = tableResponsavel.getSelectedRow();
+        registroEmEdicao = listaResponsavel.get(posAtual);
+        boolean resultado = DaoFactory.getDefaultDaoFactory().getResponsavelDao().excluir(registroEmEdicao);
+        JOptionPane.showMessageDialog(this, 
+                (resultado ? "Registro foi excluído." : "Erro ao salvar registro."), 
+                "Exclusão", 
+                JOptionPane.WARNING_MESSAGE);
+        if (resultado) {
+            listaResponsavel.remove(posAtual);
+            tableModel.fireTableDataChanged();
+            if (posAtual < listaResponsavel.size()) {
+                tableResponsavel.setRowSelectionInterval(posAtual, posAtual);
+            } else {
+                tableResponsavel.setRowSelectionInterval(listaResponsavel.size() - 1, listaResponsavel.size() - 1);
+            }
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
 
     /**
      * @param args the command line arguments

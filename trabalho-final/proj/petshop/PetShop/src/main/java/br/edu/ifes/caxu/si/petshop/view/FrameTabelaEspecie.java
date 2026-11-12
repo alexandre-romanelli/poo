@@ -2,26 +2,36 @@ package br.edu.ifes.caxu.si.petshop.view;
 
 import br.edu.ifes.caxu.si.petshop.model.Especie;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
+import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
+import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author alexr
  */
-public class FrameTabelaEspecie extends javax.swing.JFrame {
+public class FrameTabelaEspecie extends javax.swing.JFrame implements UtilFrameCallback {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrameTabelaEspecie.class.getName());
     
     private final EspecieTableModel tableModel;
+    private final ArrayList<Especie> listaEspecie;
+    private Especie registroEmEdicao;
+    private final UtilConfirmedWrapper confirmado;
 
     /**
      * Creates new form FrameTabelaEspecie
      */
     public FrameTabelaEspecie() {
         initComponents();
-        ArrayList<Especie> listaEspecie = DaoFactory.getDefaultDaoFactory().getEspecieDao().getLista();
+        listaEspecie = DaoFactory.getDefaultDaoFactory().getEspecieDao().getLista();
         tableModel = new EspecieTableModel(listaEspecie);
-        this.tableEspecie.setModel(tableModel);
+        tableEspecie.setModel(tableModel);
+        if (!listaEspecie.isEmpty()) {
+            tableEspecie.setRowSelectionInterval(0, 0);
+        }
+        confirmado = new UtilConfirmedWrapper();
     }
 
     /**
@@ -49,8 +59,10 @@ public class FrameTabelaEspecie extends javax.swing.JFrame {
         buttonNovo.addActionListener(this::buttonNovoActionPerformed);
 
         buttonAlterar.setText("Alterar");
+        buttonAlterar.addActionListener(this::buttonAlterarActionPerformed);
 
         buttonExcluir.setText("Excluir");
+        buttonExcluir.addActionListener(this::buttonExcluirActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,6 +98,7 @@ public class FrameTabelaEspecie extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableEspecie.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tableEspecie);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -107,8 +120,35 @@ public class FrameTabelaEspecie extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        // TODO add your handling code here:
+        registroEmEdicao = new Especie(-1, "");
+        FrameRegistroEspecie frameRegistroEspecie = new FrameRegistroEspecie(registroEmEdicao, confirmado, this);
+        frameRegistroEspecie.setVisible(true);
     }//GEN-LAST:event_buttonNovoActionPerformed
+
+    private void buttonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAlterarActionPerformed
+        registroEmEdicao = listaEspecie.get(tableEspecie.getSelectedRow());
+        FrameRegistroEspecie frameRegistroEspecie = new FrameRegistroEspecie(registroEmEdicao, confirmado, this);
+        frameRegistroEspecie.setVisible(true);
+    }//GEN-LAST:event_buttonAlterarActionPerformed
+
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        int posAtual = tableEspecie.getSelectedRow();
+        registroEmEdicao = listaEspecie.get(posAtual);
+        boolean resultado = DaoFactory.getDefaultDaoFactory().getEspecieDao().excluir(registroEmEdicao);
+        JOptionPane.showMessageDialog(this, 
+                (resultado ? "Registro foi excluído." : "Erro ao salvar registro."), 
+                "Exclusão", 
+                JOptionPane.WARNING_MESSAGE);
+        if (resultado) {
+            listaEspecie.remove(posAtual);
+            tableModel.fireTableDataChanged();
+            if (posAtual < listaEspecie.size()) {
+                tableEspecie.setRowSelectionInterval(posAtual, posAtual);
+            } else {
+                tableEspecie.setRowSelectionInterval(listaEspecie.size() - 1, listaEspecie.size() - 1);
+            }
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,4 +183,14 @@ public class FrameTabelaEspecie extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableEspecie;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void runCallback() {
+        if (confirmado.getConfirmed()) {
+            // recarrega tabela
+            listaEspecie.clear();
+            listaEspecie.addAll(DaoFactory.getDefaultDaoFactory().getEspecieDao().getLista());
+            tableModel.fireTableDataChanged();
+        }
+    }
 }
