@@ -1,9 +1,11 @@
 package br.edu.ifes.caxu.si.petshop.view;
 
+import br.edu.ifes.caxu.si.petshop.model.Especie;
 import br.edu.ifes.caxu.si.petshop.model.Raca;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
 import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
 import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,6 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegistro {
     
+    private ArrayList<Especie> listaEspecies;
     private final Raca registro;
     private final UtilConfirmedWrapper confirmed;
     private final UtilFrameCallback frameCallback;
@@ -30,11 +33,21 @@ public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegis
         this.registro = registro;
         this.confirmed = confirmed;
         this.frameCallback = frameCallback;
+        carregarComboBoxEspecie();
         mostrarRegistro();
+    }
+    
+    private void carregarComboBoxEspecie() {
+        listaEspecies = DaoFactory.getDefaultDaoFactory().getEspecieDao().getLista();
+        comboBoxEspecie.removeAllItems();
+        for (Especie item : listaEspecies) {
+            comboBoxEspecie.addItem(item.getNome());
+        }
     }
     
     private void mostrarRegistro() {
         this.textFieldNome.setText(registro.getId() >= 0 ? registro.getNome() : "");
+        comboBoxEspecie.setSelectedItem(registro.getId() >= 0 ? registro.getEspecie().getNome(): "");
     }
 
     /**
@@ -54,7 +67,13 @@ public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegis
         buttonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registro de raça");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setText("Espécie");
 
@@ -62,7 +81,7 @@ public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegis
 
         jLabel2.setText("Nome");
 
-        buttonSalvar.setBackground(new java.awt.Color(62, 95, 225));
+        buttonSalvar.setBackground(new java.awt.Color(0, 122, 255));
         buttonSalvar.setText("Salvar registro");
         buttonSalvar.addActionListener(this::buttonSalvarActionPerformed);
 
@@ -123,6 +142,10 @@ public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegis
         this.dispose();
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        frameCallback.runCallback();
+    }//GEN-LAST:event_formWindowClosed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonSalvar;
@@ -135,6 +158,7 @@ public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegis
     @Override
     public void salvarEdicao() {
         registro.setNome(textFieldNome.getText());
+        registro.setEspecie(listaEspecies.get(comboBoxEspecie.getSelectedIndex()));
         boolean resultado = false;
         if (registro.getId() == -1) {
             resultado = DaoFactory.getDefaultDaoFactory().getRacaDao().inserir(registro);

@@ -1,0 +1,15 @@
+[Número de registros]
+4
+[Registros]
+1
+1
+S.R.D.
+2
+1
+Cocker Spaniel
+3
+2
+Frajola
+4
+2
+Siamês

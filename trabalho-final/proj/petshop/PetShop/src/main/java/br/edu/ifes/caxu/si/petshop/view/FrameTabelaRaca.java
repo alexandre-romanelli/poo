@@ -51,6 +51,7 @@ public class FrameTabelaRaca extends javax.swing.JFrame implements UtilFrameCall
         tableRaca = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tabela de raças");
 
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 38));
 
@@ -130,21 +131,25 @@ public class FrameTabelaRaca extends javax.swing.JFrame implements UtilFrameCall
     }//GEN-LAST:event_buttonAlterarActionPerformed
 
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
-        int posAtual = tableRaca.getSelectedRow();
-        registroEmEdicao = listaRaca.get(posAtual);
-        boolean resultado = DaoFactory.getDefaultDaoFactory().getRacaDao().excluir(registroEmEdicao);
-        JOptionPane.showMessageDialog(this,
-            (resultado ? "Registro foi excluído." : "Erro ao salvar registro."),
-            "Exclusão",
-            JOptionPane.WARNING_MESSAGE);
-        if (resultado) {
-            listaRaca.remove(posAtual);
-            tableModel.fireTableDataChanged();
-            if (posAtual < listaRaca.size()) {
-                tableRaca.setRowSelectionInterval(posAtual, posAtual);
-            } else {
-                tableRaca.setRowSelectionInterval(listaRaca.size() - 1, listaRaca.size() - 1);
-            }
+        if (JOptionPane.showConfirmDialog(this, 
+                "Confirma exclusão do registro selecionado?", 
+                "Aviso de exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int posAtual = tableRaca.getSelectedRow();
+            registroEmEdicao = listaRaca.get(posAtual);
+            boolean resultado = DaoFactory.getDefaultDaoFactory().getRacaDao().excluir(registroEmEdicao);
+            JOptionPane.showMessageDialog(this,
+                (resultado ? "Registro foi excluído." : "Erro ao salvar registro."),
+                "Exclusão",
+                JOptionPane.WARNING_MESSAGE);
+            if (resultado) {
+                listaRaca.remove(posAtual);
+                tableModel.fireTableDataChanged();
+                if (posAtual < listaRaca.size()) {
+                    tableRaca.setRowSelectionInterval(posAtual, posAtual);
+                } else {
+                    tableRaca.setRowSelectionInterval(listaRaca.size() - 1, listaRaca.size() - 1);
+                }
+            }            
         }
     }//GEN-LAST:event_buttonExcluirActionPerformed
 

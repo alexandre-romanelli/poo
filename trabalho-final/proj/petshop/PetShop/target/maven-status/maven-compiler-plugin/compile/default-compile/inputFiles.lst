@@ -13,6 +13,10 @@
 /home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/model/dao/sqlite/SqliteEspecieDao.java
 /home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/model/dao/sqlite/SqliteRacaDao.java
 /home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/model/dao/sqlite/SqliteResponsavelDao.java
+/home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/model/dao/txtfile/TxtFileDaoFactory.java
+/home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/model/dao/txtfile/TxtFileEspecieDao.java
+/home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/model/dao/txtfile/TxtFileRacaDao.java
+/home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/model/dao/txtfile/TxtFileResponsavelDao.java
 /home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/util/UtilConfirmedWrapper.java
 /home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/util/UtilFrameCallback.java
 /home/alexandre/dev/poo/trabalho-final/proj/petshop/PetShop/src/main/java/br/edu/ifes/caxu/si/petshop/view/EspecieTableModel.java

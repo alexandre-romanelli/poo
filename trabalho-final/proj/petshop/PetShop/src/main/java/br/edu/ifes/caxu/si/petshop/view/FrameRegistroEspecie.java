@@ -61,7 +61,7 @@ public class FrameRegistroEspecie extends javax.swing.JFrame implements JanelaRe
 
         jLabel1.setText("Nome");
 
-        buttonSalvar.setBackground(new java.awt.Color(62, 95, 225));
+        buttonSalvar.setBackground(new java.awt.Color(0, 51, 255));
         buttonSalvar.setText("Salvar registro");
         buttonSalvar.addActionListener(this::buttonSalvarActionPerformed);
 

@@ -67,9 +67,8 @@ public class SqliteEspecieDao implements EspecieDao {
             ps.setInt(1, especie.getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt(1);
-                String nome = rs.getString(2);
-                Especie especieBuscada = new Especie(id, nome);
+                String nome = rs.getString(1);
+                Especie especieBuscada = new Especie(especie.getId(), nome);
                 return especieBuscada;
             }
         } catch (SQLException e) {
