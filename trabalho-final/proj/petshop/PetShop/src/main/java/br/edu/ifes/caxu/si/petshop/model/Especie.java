@@ -18,7 +18,7 @@ public class Especie implements Entidade {
         return idEspecie;
     }
 
-    public void setIdEspecie(int idEspecie) {
+    public void setId(int idEspecie) {
         this.idEspecie = idEspecie;
     }
 
