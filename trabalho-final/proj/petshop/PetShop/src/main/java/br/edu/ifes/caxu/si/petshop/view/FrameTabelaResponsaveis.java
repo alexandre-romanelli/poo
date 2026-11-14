@@ -2,7 +2,7 @@ package br.edu.ifes.caxu.si.petshop.view;
 
 import br.edu.ifes.caxu.si.petshop.model.Responsavel;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
-import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
+import br.edu.ifes.caxu.si.petshop.util.UtiIOperacaoFeita;
 import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -18,7 +18,7 @@ public class FrameTabelaResponsaveis extends javax.swing.JFrame implements UtilF
     private final ArrayList<Responsavel> listaResponsavel;
     private final ResponsavelTableModel tableModel;
     private Responsavel registroEmEdicao;
-    private final UtilConfirmedWrapper confirmado;
+    private final UtiIOperacaoFeita confirmado;
 
     /**
      * Creates new form FrameTabelaResponsaveis
@@ -28,7 +28,7 @@ public class FrameTabelaResponsaveis extends javax.swing.JFrame implements UtilF
         listaResponsavel = DaoFactory.getDefaultDaoFactory().getResponsavelDao().getLista();
         tableModel = new ResponsavelTableModel(listaResponsavel);
         tableResponsavel.setModel(tableModel);
-        confirmado = new UtilConfirmedWrapper();
+        confirmado = new UtiIOperacaoFeita();
     }
 
     /**
@@ -184,7 +184,7 @@ public class FrameTabelaResponsaveis extends javax.swing.JFrame implements UtilF
 
     @Override
     public void runCallback() {
-        if (confirmado.getConfirmed()) {
+        if (confirmado.getOperacaoFeita()) {
             // recarrega tabela
             listaResponsavel.clear();
             listaResponsavel.addAll(DaoFactory.getDefaultDaoFactory().getResponsavelDao().getLista());

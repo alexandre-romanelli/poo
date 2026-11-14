@@ -10,7 +10,8 @@ public class Responsavel implements Entidade {
     private String telefone;
     private String endereco;
     
-    public Responsavel(int idResponsavel, String nome, String telefone, String endereco) {
+    public Responsavel(int idResponsavel, String nome, 
+            String telefone, String endereco) {
         this.idResponsavel = idResponsavel;
         this.nome = nome;
         this.telefone = telefone;

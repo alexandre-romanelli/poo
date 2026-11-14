@@ -2,6 +2,7 @@ package br.edu.ifes.caxu.si.petshop;
 
 import br.edu.ifes.caxu.si.petshop.view.FrameTabelaEspecie;
 import br.edu.ifes.caxu.si.petshop.view.FrameTabelaPets;
+import br.edu.ifes.caxu.si.petshop.view.FrameTabelaResponsaveis;
 
 /**
  *
@@ -22,7 +23,7 @@ public class PetShop {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
 //        java.awt.EventQueue.invokeLater(() -> new FrameTabelaPets().setVisible(true));
-        java.awt.EventQueue.invokeLater(() -> new FrameTabelaEspecie().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FrameTabelaResponsaveis().setVisible(true));
     }
 }
 

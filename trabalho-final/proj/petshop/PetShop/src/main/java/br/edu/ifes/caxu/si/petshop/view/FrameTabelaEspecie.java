@@ -2,7 +2,7 @@ package br.edu.ifes.caxu.si.petshop.view;
 
 import br.edu.ifes.caxu.si.petshop.model.Especie;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
-import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
+import br.edu.ifes.caxu.si.petshop.util.UtiIOperacaoFeita;
 import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -18,7 +18,7 @@ public class FrameTabelaEspecie extends javax.swing.JFrame implements UtilFrameC
     private final EspecieTableModel tableModel;
     private final ArrayList<Especie> listaEspecie;
     private Especie registroEmEdicao;
-    private final UtilConfirmedWrapper confirmado;
+    private final UtiIOperacaoFeita confirmado;
 
     /**
      * Creates new form FrameTabelaEspecie
@@ -31,7 +31,7 @@ public class FrameTabelaEspecie extends javax.swing.JFrame implements UtilFrameC
         if (!listaEspecie.isEmpty()) {
             tableEspecie.setRowSelectionInterval(0, 0);
         }
-        confirmado = new UtilConfirmedWrapper();
+        confirmado = new UtiIOperacaoFeita();
     }
 
     /**
@@ -186,7 +186,7 @@ public class FrameTabelaEspecie extends javax.swing.JFrame implements UtilFrameC
 
     @Override
     public void runCallback() {
-        if (confirmado.getConfirmed()) {
+        if (confirmado.getOperacaoFeita()) {
             // recarrega tabela
             listaEspecie.clear();
             listaEspecie.addAll(DaoFactory.getDefaultDaoFactory().getEspecieDao().getLista());

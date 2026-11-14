@@ -1,0 +1,11 @@
+[Número de registros]
+2
+[Registros]
+0
+Alexandre
+28 99999 0000
+Rua projetada, s.n., Vila Esperança, Vargem Alta
+1
+Adriano
+28 99999 2222
+Rua Fran. A. C. Imperial, 99, Santo Antônio, Cachoeiro

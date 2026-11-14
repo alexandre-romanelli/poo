@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public interface EspecieDao {
     public ArrayList<Especie> getLista();
     
-    public Especie buscar(Entidade responsavel);
+    public Especie buscar(Entidade especie);
     
-    public boolean inserir(Especie responsavel);
+    public boolean inserir(Especie especie);
     
-    public boolean alterar(Especie responsavel);
+    public boolean alterar(Especie especie);
     
-    public boolean excluir(Especie responsavel);
+    public boolean excluir(Especie especie);
 }

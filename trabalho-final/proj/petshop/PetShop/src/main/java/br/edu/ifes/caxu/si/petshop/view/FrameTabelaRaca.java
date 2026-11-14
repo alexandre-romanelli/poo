@@ -2,7 +2,7 @@ package br.edu.ifes.caxu.si.petshop.view;
 
 import br.edu.ifes.caxu.si.petshop.model.Raca;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
-import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
+import br.edu.ifes.caxu.si.petshop.util.UtiIOperacaoFeita;
 import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -18,7 +18,7 @@ public class FrameTabelaRaca extends javax.swing.JFrame implements UtilFrameCall
     private final RacaTableModel tableModel;
     private final ArrayList<Raca> listaRaca;
     private Raca registroEmEdicao;
-    private final UtilConfirmedWrapper confirmado;
+    private final UtiIOperacaoFeita confirmado;
 
     /**
      * Creates new form FrameTabelaRaca
@@ -31,7 +31,7 @@ public class FrameTabelaRaca extends javax.swing.JFrame implements UtilFrameCall
         if (!listaRaca.isEmpty()) {
             tableRaca.setRowSelectionInterval(0, 0);
         }
-        confirmado = new UtilConfirmedWrapper();
+        confirmado = new UtiIOperacaoFeita();
     }
 
     /**
@@ -189,7 +189,7 @@ public class FrameTabelaRaca extends javax.swing.JFrame implements UtilFrameCall
 
     @Override
     public void runCallback() {
-        if (confirmado.getConfirmed()) {
+        if (confirmado.getOperacaoFeita()) {
             // recarrega tabela
             listaRaca.clear();
             listaRaca.addAll(DaoFactory.getDefaultDaoFactory().getRacaDao().getLista());

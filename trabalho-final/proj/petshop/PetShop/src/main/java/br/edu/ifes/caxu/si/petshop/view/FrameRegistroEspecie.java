@@ -2,7 +2,7 @@ package br.edu.ifes.caxu.si.petshop.view;
 
 import br.edu.ifes.caxu.si.petshop.model.Especie;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
-import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
+import br.edu.ifes.caxu.si.petshop.util.UtiIOperacaoFeita;
 import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import javax.swing.JOptionPane;
 
@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 public class FrameRegistroEspecie extends javax.swing.JFrame implements JanelaRegistro {
     
     private final Especie registro;
-    private final UtilConfirmedWrapper confirmed;
+    private final UtiIOperacaoFeita confirmed;
     private final UtilFrameCallback frameCallback;
 
     /**
@@ -25,7 +25,7 @@ public class FrameRegistroEspecie extends javax.swing.JFrame implements JanelaRe
      *                      de tabela correspondente, quando a janela de registro 
      *                      for encerrada.
      */
-    public FrameRegistroEspecie(Especie registro, UtilConfirmedWrapper confirmed, UtilFrameCallback frameCallback) {
+    public FrameRegistroEspecie(Especie registro, UtiIOperacaoFeita confirmed, UtilFrameCallback frameCallback) {
         initComponents();
         this.registro = registro;
         this.confirmed = confirmed;
@@ -132,7 +132,8 @@ public class FrameRegistroEspecie extends javax.swing.JFrame implements JanelaRe
         registro.setNome(textFieldNome.getText());
         boolean resultado = false;
         if (registro.getId() == -1) {
-            resultado = DaoFactory.getDefaultDaoFactory().getEspecieDao().inserir(registro);
+            resultado = DaoFactory.getDefaultDaoFactory().
+                    getEspecieDao().inserir(registro);
         } else {
             resultado = DaoFactory.getDefaultDaoFactory().getEspecieDao().alterar(registro);
         }

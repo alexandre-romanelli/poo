@@ -3,8 +3,9 @@ package br.edu.ifes.caxu.si.petshop.model.dao.txtfile;
 import br.edu.ifes.caxu.si.petshop.model.Entidade;
 import br.edu.ifes.caxu.si.petshop.model.Especie;
 import br.edu.ifes.caxu.si.petshop.model.dao.EspecieDao;
+import br.edu.ifes.caxu.si.petshop.util.UtilConstantes;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,13 +23,11 @@ import javax.swing.JOptionPane;
  */
 public class TxtFileEspecieDao implements EspecieDao {
     
-    private String caminhoArquivo = "txt_data/especie.txt";
-    
     private ArrayList<String> lerArquivo() {
         ArrayList<String> listaEspecies = new ArrayList<>();
         FileInputStream fileInputStreamEspecie;
         try {
-            fileInputStreamEspecie = new FileInputStream(caminhoArquivo);
+            fileInputStreamEspecie = new FileInputStream(UtilConstantes.CAMINHO_ARQUIVO_ESPECIES);
             InputStreamReader inputStreamEspecie = new InputStreamReader(fileInputStreamEspecie, StandardCharsets.UTF_8);
             BufferedReader bufferedReaderEspecie = new BufferedReader(inputStreamEspecie);
             List<String> listaLinhas = bufferedReaderEspecie.readAllLines();
@@ -95,10 +94,10 @@ public class TxtFileEspecieDao implements EspecieDao {
         boolean resultado = true;
         FileOutputStream fileOutputStreamEspecie;
         try {
-            fileOutputStreamEspecie = new FileOutputStream(caminhoArquivo);
+            fileOutputStreamEspecie = new FileOutputStream(UtilConstantes.CAMINHO_ARQUIVO_ESPECIES);
             OutputStreamWriter outputStreamEspecie = new OutputStreamWriter(fileOutputStreamEspecie, StandardCharsets.UTF_8);
             outputStreamEspecie.write("[Número de registros]\n");
-            outputStreamEspecie.write(Integer.toString(lista.size()));
+            outputStreamEspecie.write(Integer.toString(lista.size()) + "\n");
             outputStreamEspecie.write("[Registros]\n");
             for (Especie especie : lista) {
                 outputStreamEspecie.write(Integer.toString(especie.getId()) + "\n");
@@ -137,16 +136,14 @@ public class TxtFileEspecieDao implements EspecieDao {
 
     @Override
     public boolean excluir(Especie especie) {
-        boolean resultado = true;
-        for (int ind; ind < listaEspecies; ++ind) {
-            
-        }
         ArrayList<Especie> listaEspecies = getLista();
-        for (Especie e : listaEspecies) {
-            if (e.getId() == especie.getId()) {
-                e.setNome(especie.getNome());
+        for (int ind = 0; ind < listaEspecies.size(); ++ind) {
+            if (listaEspecies.get(ind).getId() == especie.getId()) {
+                listaEspecies.remove(ind);
+                return salvarListaEmArquivo(listaEspecies);
             }
         }
+        return false;
     }
     
 }

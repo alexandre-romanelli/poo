@@ -3,7 +3,7 @@ package br.edu.ifes.caxu.si.petshop.view;
 import br.edu.ifes.caxu.si.petshop.model.Especie;
 import br.edu.ifes.caxu.si.petshop.model.Raca;
 import br.edu.ifes.caxu.si.petshop.model.dao.DaoFactory;
-import br.edu.ifes.caxu.si.petshop.util.UtilConfirmedWrapper;
+import br.edu.ifes.caxu.si.petshop.util.UtiIOperacaoFeita;
 import br.edu.ifes.caxu.si.petshop.util.UtilFrameCallback;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -16,7 +16,7 @@ public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegis
     
     private ArrayList<Especie> listaEspecies;
     private final Raca registro;
-    private final UtilConfirmedWrapper confirmed;
+    private final UtiIOperacaoFeita confirmed;
     private final UtilFrameCallback frameCallback;
 
     /**
@@ -28,7 +28,7 @@ public class FrameRegistroRaca extends javax.swing.JFrame implements JanelaRegis
      *                      de tabela correspondente, quando a janela de registro 
      *                      for encerrada.
      */
-    public FrameRegistroRaca(Raca registro, UtilConfirmedWrapper confirmed, UtilFrameCallback frameCallback) {
+    public FrameRegistroRaca(Raca registro, UtiIOperacaoFeita confirmed, UtilFrameCallback frameCallback) {
         initComponents();
         this.registro = registro;
         this.confirmed = confirmed;

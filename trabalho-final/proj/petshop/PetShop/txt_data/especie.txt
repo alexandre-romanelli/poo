@@ -1,7 +1,9 @@
 [Número de registros]
-2
+3
 [Registros]
 1
 Cão
 2
 Gato
+3
+Coelhão
