@@ -9,5 +9,6 @@ package br.edu.ifes.caxu.si.petshop.util;
  * @author alexr
  */
 public interface UtilFrameCallback {
-    public void runCallback();
+
+  public void runCallback();
 }

@@ -9,13 +9,14 @@ import java.util.ArrayList;
  * @author alexandre
  */
 public interface ResponsavelDao {
-    public ArrayList<Responsavel> getLista();
-    
-    public Responsavel buscar(Entidade responsavel);
-    
-    public boolean inserir(Responsavel responsavel);
-    
-    public boolean alterar(Responsavel responsavel);
-    
-    public boolean excluir(Responsavel responsavel);
+
+  public ArrayList<Responsavel> getLista();
+
+  public Responsavel buscar(Entidade responsavel);
+
+  public boolean inserir(Responsavel responsavel);
+
+  public boolean alterar(Responsavel responsavel);
+
+  public boolean excluir(Responsavel responsavel);
 }

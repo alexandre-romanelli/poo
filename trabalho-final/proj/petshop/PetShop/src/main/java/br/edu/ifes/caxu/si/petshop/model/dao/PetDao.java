@@ -9,13 +9,14 @@ import java.util.ArrayList;
  * @author alexandre
  */
 public interface PetDao {
-    public ArrayList<Pet> getLista();
-    
-    public Pet buscar(Entidade pet);
-    
-    public boolean inserir(Pet pet);
-    
-    public boolean alterar(Pet pet);
-    
-    public boolean excluir(Entidade pet);
+
+  public ArrayList<Pet> getLista();
+
+  public Pet buscar(Entidade pet);
+
+  public boolean inserir(Pet pet);
+
+  public boolean alterar(Pet pet);
+
+  public boolean excluir(Entidade pet);
 }

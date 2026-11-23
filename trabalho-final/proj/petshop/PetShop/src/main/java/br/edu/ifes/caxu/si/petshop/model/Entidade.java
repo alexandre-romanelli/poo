@@ -5,5 +5,8 @@ package br.edu.ifes.caxu.si.petshop.model;
  * @author alexandre
  */
 public interface Entidade {
-    public int getId();
+
+  public int getId();
+
+  public void setId(int id);
 }

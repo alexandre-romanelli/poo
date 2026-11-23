@@ -9,13 +9,14 @@ import java.util.ArrayList;
  * @author alexandre
  */
 public interface EspecieDao {
-    public ArrayList<Especie> getLista();
-    
-    public Especie buscar(Entidade especie);
-    
-    public boolean inserir(Especie especie);
-    
-    public boolean alterar(Especie especie);
-    
-    public boolean excluir(Especie especie);
+
+  public ArrayList<Especie> getLista();
+
+  public Especie buscar(Entidade especie);
+
+  public boolean inserir(Especie especie);
+
+  public boolean alterar(Especie especie);
+
+  public boolean excluir(Especie especie);
 }

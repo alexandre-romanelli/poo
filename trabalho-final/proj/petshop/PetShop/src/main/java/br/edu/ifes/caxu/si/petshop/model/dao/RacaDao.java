@@ -9,13 +9,14 @@ import java.util.ArrayList;
  * @author alexandre
  */
 public interface RacaDao {
-    public ArrayList<Raca> getLista();
-    
-    public Raca buscar(Entidade raca);
-    
-    public boolean inserir(Raca raca);
-    
-    public boolean alterar(Raca raca);
-    
-    public boolean excluir(Raca raca);
+
+  public ArrayList<Raca> getLista();
+
+  public Raca buscar(Entidade raca);
+
+  public boolean inserir(Raca raca);
+
+  public boolean alterar(Raca raca);
+
+  public boolean excluir(Raca raca);
 }

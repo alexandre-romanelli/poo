@@ -5,13 +5,12 @@ import br.edu.ifes.caxu.si.petshop.model.Especie;
 import br.edu.ifes.caxu.si.petshop.model.dao.EspecieDao;
 import br.edu.ifes.caxu.si.petshop.util.UtilConstantes;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,128 +21,122 @@ import javax.swing.JOptionPane;
  * @author alexandre
  */
 public class TxtFileEspecieDao implements EspecieDao {
-    
-    private ArrayList<String> lerArquivo() {
-        ArrayList<String> listaEspecies = new ArrayList<>();
-        FileInputStream fileInputStreamEspecie;
-        try {
-            fileInputStreamEspecie = new FileInputStream(UtilConstantes.CAMINHO_ARQUIVO_ESPECIES);
-            InputStreamReader inputStreamEspecie = new InputStreamReader(fileInputStreamEspecie, StandardCharsets.UTF_8);
-            BufferedReader bufferedReaderEspecie = new BufferedReader(inputStreamEspecie);
-            List<String> listaLinhas = bufferedReaderEspecie.readAllLines();
-            listaEspecies.addAll(listaLinhas);
-            
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Arquivo de espécies não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Falha ao ler arquivo de espécies.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-        return listaEspecies;
-    }
 
-    @Override
-    public ArrayList<Especie> getLista() {
-        ArrayList<Especie> lista = new ArrayList<>();
-        ArrayList<String> listaLinhas = lerArquivo();
-        int numRegistros = Integer.parseInt(listaLinhas.get(1));
-        int linhaInicioRegistro = 3;
-        for (int indiceRegistro = 0; indiceRegistro < numRegistros; ++indiceRegistro) {
-            // identificador
-            int id = Integer.parseInt(listaLinhas.get(indiceRegistro * 2 + linhaInicioRegistro + 0));
-            // nome
-            String nome = listaLinhas.get(indiceRegistro * 2 + linhaInicioRegistro + 1);
-            // espécie
-            Especie especie = new Especie(id, nome);
-            lista.add(especie);
-        }
-        return lista;
-    }
+  private static int INDICE_INICIO_REGISTROS = 3;
+  private int LINHAS_POR_REGISTRO = 2;
 
-    @Override
-    public Especie buscar(Entidade especie) {
-        Especie registroBuscado = new Especie(-1, "");
-        ArrayList<String> listaLinhas = lerArquivo();
-        int numRegistros = Integer.parseInt(listaLinhas.get(1));
-        int linhaInicioRegistro = 3;
-        for (int indiceRegistro = 0; indiceRegistro < numRegistros; ++indiceRegistro) {
-            // identificador
-            int id = Integer.parseInt(listaLinhas.get(indiceRegistro * 2 + linhaInicioRegistro + 0));
-            if (id == especie.getId()) {
-                // nome
-                String nome = listaLinhas.get(indiceRegistro * 2 + linhaInicioRegistro + 1);
-                // espécie
-                registroBuscado = new Especie(id, nome);
-                break;
-            }
-        }
-        return registroBuscado;
+  private List<String> lerArquivo() {
+    FileInputStream file;
+    try {
+      file = new FileInputStream(UtilConstantes.CAMINHO_ARQUIVO_ESPECIES);
+      InputStreamReader inputStream = new InputStreamReader(file, StandardCharsets.UTF_8);
+      List<String> listaLinhas = inputStream.readAllLines();
+      inputStream.close();
+      return listaLinhas;
+    } catch (FileNotFoundException ex) {
+      JOptionPane.showMessageDialog(null, "Arquivo de espécies não encontrado.",
+              "Erro", JOptionPane.ERROR_MESSAGE);
+    } catch (IOException ex) {
+      JOptionPane.showMessageDialog(null, "Falha ao ler arquivo de espécies.",
+              "Erro", JOptionPane.ERROR_MESSAGE);
     }
-    
-    private int obtemMaiorId() {
-        int maiorId = -1;
-        ArrayList<Especie> listaEspecies = getLista();
-        for (Especie registro : listaEspecies) {
-            if (registro.getId() > maiorId) {
-                maiorId = registro.getId();
-            }
-        }
-        return maiorId;
-    }
-    
-    private boolean salvarListaEmArquivo(ArrayList<Especie> lista) {
-        boolean resultado = true;
-        FileOutputStream fileOutputStreamEspecie;
-        try {
-            fileOutputStreamEspecie = new FileOutputStream(UtilConstantes.CAMINHO_ARQUIVO_ESPECIES);
-            OutputStreamWriter outputStreamEspecie = new OutputStreamWriter(fileOutputStreamEspecie, StandardCharsets.UTF_8);
-            outputStreamEspecie.write("[Número de registros]\n");
-            outputStreamEspecie.write(Integer.toString(lista.size()) + "\n");
-            outputStreamEspecie.write("[Registros]\n");
-            for (Especie especie : lista) {
-                outputStreamEspecie.write(Integer.toString(especie.getId()) + "\n");
-                outputStreamEspecie.write(especie.getNome() + "\n");
-            }
-            outputStreamEspecie.close();
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Arquivo de dados não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            resultado = false;
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever em arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
-            resultado = false;
-        }
-        return resultado;
-    }
+    return null;
+  }
 
-    @Override
-    public boolean inserir(Especie especie) {
-        int maiorId = obtemMaiorId();
-        especie.setId(maiorId + 1);
-        ArrayList<Especie> listaEspecies = getLista();
-        listaEspecies.add(especie);
+  private void obterRegistrosDeListaDeLinhas(List<String> linhas,
+          ArrayList<Especie> listaEspecie,
+          boolean pararEmId,
+          Especie regProcurado) {
+    int numRegistros = Integer.parseInt(linhas.get(1));
+    for (int indRegistro = 0; indRegistro < numRegistros; ++indRegistro) {
+      int posRegistro = INDICE_INICIO_REGISTROS + LINHAS_POR_REGISTRO * indRegistro;
+      int id = Integer.parseInt(linhas.get(posRegistro));
+      String nome = linhas.get(posRegistro + 1);
+      if (!pararEmId) {
+        Especie especie = new Especie(id, nome);
+        listaEspecie.add(especie);
+      } else if (id == regProcurado.getId()) {
+        regProcurado.setNome(nome);
+        return;
+      }
+    }
+  }
+
+  private int obterMaiorId(ArrayList<Especie> lista) {
+    int maiorId = -1;
+    for (Especie e : lista) {
+      if (e.getId() > maiorId) {
+        maiorId = e.getId();
+      }
+    }
+    return maiorId;
+  }
+
+  private boolean salvarListaEmArquivo(ArrayList<Especie> lista) {
+    try {
+      FileWriter f = new FileWriter(UtilConstantes.CAMINHO_ARQUIVO_ESPECIES);
+      PrintWriter pw = new PrintWriter(f);
+      pw.println("[Número de registros]");
+      pw.println(lista.size());
+      pw.println("[Registros]");
+      for (Especie registro : lista) {
+        pw.println(registro.getId());
+        pw.println(registro.getNome());
+      }
+      pw.close();
+      return true;
+    } catch (IOException ex) {
+      JOptionPane.showMessageDialog(null, "Falha ao escrever em arquivo de espécies.",
+              "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+    return false;
+  }
+
+  @Override
+  public ArrayList<Especie> getLista() {
+    List<String> listaLinhas = lerArquivo();
+    ArrayList<Especie> listaRegistros = new ArrayList<>();
+    obterRegistrosDeListaDeLinhas(listaLinhas, listaRegistros, false, null);
+    return listaRegistros;
+  }
+
+  @Override
+  public Especie buscar(Entidade especie) {
+    List<String> listaLinhas = lerArquivo();
+    Especie regProcurado = new Especie(especie.getId());
+    obterRegistrosDeListaDeLinhas(listaLinhas, null, true, regProcurado);
+    return regProcurado;
+  }
+
+  @Override
+  public boolean inserir(Especie especie) {
+    ArrayList<Especie> lista = getLista();
+    int maiorId = obterMaiorId(lista);
+    especie.setId(maiorId + 1);
+    lista.add(especie);
+    return salvarListaEmArquivo(lista);
+  }
+
+  @Override
+  public boolean alterar(Especie especie) {
+    ArrayList<Especie> listaEspecies = getLista();
+    for (Especie e : listaEspecies) {
+      if (e.getId() == especie.getId()) {
+        e.setNome(especie.getNome());
+      }
+    }
+    return salvarListaEmArquivo(listaEspecies);
+  }
+
+  @Override
+  public boolean excluir(Especie especie) {
+    ArrayList<Especie> listaEspecies = getLista();
+    for (int ind = 0; ind < listaEspecies.size(); ++ind) {
+      if (listaEspecies.get(ind).getId() == especie.getId()) {
+        listaEspecies.remove(ind);
         return salvarListaEmArquivo(listaEspecies);
+      }
     }
-
-    @Override
-    public boolean alterar(Especie especie) {
-        ArrayList<Especie> listaEspecies = getLista();
-        for (Especie e : listaEspecies) {
-            if (e.getId() == especie.getId()) {
-                e.setNome(especie.getNome());
-            }
-        }
-        return salvarListaEmArquivo(listaEspecies);
-    }
-
-    @Override
-    public boolean excluir(Especie especie) {
-        ArrayList<Especie> listaEspecies = getLista();
-        for (int ind = 0; ind < listaEspecies.size(); ++ind) {
-            if (listaEspecies.get(ind).getId() == especie.getId()) {
-                listaEspecies.remove(ind);
-                return salvarListaEmArquivo(listaEspecies);
-            }
-        }
-        return false;
-    }
-    
+    return false;
+  }
 }

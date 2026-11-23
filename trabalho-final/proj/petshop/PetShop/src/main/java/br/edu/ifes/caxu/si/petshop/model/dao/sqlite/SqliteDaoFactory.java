@@ -17,52 +17,52 @@ import javax.swing.JOptionPane;
  * @author alexandre
  */
 public class SqliteDaoFactory extends DaoFactory {
-    
-    private static Connection conn;
-    
-    private ResponsavelDao responsavelDao;
-    private EspecieDao especieDao;
-    private RacaDao racaDao;
-    
-    public static Connection getConnection() {
-        if (conn == null) {
-            try {
-                conn = DriverManager.getConnection(UtilConstantes.SQLITE_DB_URL);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.",
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return conn;
-    }
 
-    @Override
-    public ResponsavelDao getResponsavelDao() {
-        if (responsavelDao == null) {
-            responsavelDao = new SqliteResponsavelDao();
-        }
-        return responsavelDao;
-    }
+  private static Connection conn;
 
-    @Override
-    public EspecieDao getEspecieDao() {
-        if (especieDao == null) {
-            especieDao = new SqliteEspecieDao();
-        }
-        return especieDao;
-    }
+  private ResponsavelDao responsavelDao;
+  private EspecieDao especieDao;
+  private RacaDao racaDao;
 
-    @Override
-    public RacaDao getRacaDao() {
-        if (racaDao == null) {
-            racaDao = new SqliteRacaDao();
-        }
-        return racaDao;
+  public static Connection getConnection() {
+    if (conn == null) {
+      try {
+        conn = DriverManager.getConnection(UtilConstantes.SQLITE_DB_URL);
+      } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.",
+                "Erro", JOptionPane.ERROR_MESSAGE);
+      }
     }
+    return conn;
+  }
 
-    @Override
-    public PetDao getPetDao() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+  @Override
+  public ResponsavelDao getResponsavelDao() {
+    if (responsavelDao == null) {
+      responsavelDao = new SqliteResponsavelDao();
     }
-    
+    return responsavelDao;
+  }
+
+  @Override
+  public EspecieDao getEspecieDao() {
+    if (especieDao == null) {
+      especieDao = new SqliteEspecieDao();
+    }
+    return especieDao;
+  }
+
+  @Override
+  public RacaDao getRacaDao() {
+    if (racaDao == null) {
+      racaDao = new SqliteRacaDao();
+    }
+    return racaDao;
+  }
+
+  @Override
+  public PetDao getPetDao() {
+    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+  }
+
 }
