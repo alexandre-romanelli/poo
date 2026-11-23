@@ -23,6 +23,7 @@ public class SqliteDaoFactory extends DaoFactory {
   private ResponsavelDao responsavelDao;
   private EspecieDao especieDao;
   private RacaDao racaDao;
+  private PetDao petDao;
 
   public static Connection getConnection() {
     if (conn == null) {
@@ -62,7 +63,10 @@ public class SqliteDaoFactory extends DaoFactory {
 
   @Override
   public PetDao getPetDao() {
-    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    if (petDao == null) {
+      petDao = new SqlitePetDao();
+    }
+    return petDao;
   }
 
 }

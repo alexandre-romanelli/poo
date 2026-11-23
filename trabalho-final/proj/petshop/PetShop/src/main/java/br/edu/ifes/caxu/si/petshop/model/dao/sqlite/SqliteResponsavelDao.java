@@ -74,12 +74,13 @@ public class SqliteResponsavelDao implements ResponsavelDao {
       ps.setInt(1, responsavel.getId());
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-        int id = rs.getInt(1);
-        String nome = rs.getString(2);
-        String telefone = rs.getString(3);
-        String endereco = rs.getString(4);
-        Responsavel responsavelBuscado = new Responsavel(id, nome, telefone, endereco);
-        return responsavelBuscado;
+        String nome = rs.getString(1);
+        String telefone = rs.getString(2);
+        String endereco = rs.getString(3);
+        ((Responsavel) responsavel).setNome(nome);
+        ((Responsavel) responsavel).setTelefone(telefone);
+        ((Responsavel) responsavel).setEndereco(endereco);
+        return (Responsavel) responsavel;
       }
     } catch (SQLException e) {
       JOptionPane.showMessageDialog(null,

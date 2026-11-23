@@ -19,7 +19,9 @@ public class Pet implements Entidade {
   // (...)
   
   public Pet() {
-    this(-1);
+    this(-1); // chamada a outro construtor apenas para exemplificar esta técnica
+    // poderia ser:
+    // this.id = -1;
   }
   
   public Pet(int id) {

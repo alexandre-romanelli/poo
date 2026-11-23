@@ -22,6 +22,8 @@ br\edu\ifes\caxu\si\petshop\model\dao\txtfile\TxtFileResponsavelDao.class
 br\edu\ifes\caxu\si\petshop\PetShop.class
 br\edu\ifes\caxu\si\petshop\model\Pet.class
 br\edu\ifes\caxu\si\petshop\model\dao\sqlite\SqliteDaoFactory.class
+br\edu\ifes\caxu\si\petshop\model\dao\sqlite\SqlitePetDao.class
+br\edu\ifes\caxu\si\petshop\view\FrameTabelaPets.class
 br\edu\ifes\caxu\si\petshop\util\UtilFrameCallback.class
 br\edu\ifes\caxu\si\petshop\view\FrameRegistroRaca$1.class
 br\edu\ifes\caxu\si\petshop\util\UtiIOperacaoFeita.class
