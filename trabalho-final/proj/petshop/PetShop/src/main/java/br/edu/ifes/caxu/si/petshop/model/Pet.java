@@ -106,11 +106,13 @@ public class Pet implements Entidade {
   }
 
   public int getIdade() {
-    Calendar nasc = Calendar.getInstance();
-    nasc.setTime(nascimento);
+    Calendar calNascimento = Calendar.getInstance();
+    calNascimento.setTime(this.nascimento);
     Calendar hoje = Calendar.getInstance();
-    int difAnos = hoje.get(YEAR) - nasc.get(YEAR);
-    if (nasc.get(MONTH) > hoje.get(MONTH) || nasc.get(DATE) > hoje.get(DATE)) {
+    int difAnos = hoje.get(YEAR) - calNascimento.get(YEAR);
+    int diaDoAnoNascimento = calNascimento.get(Calendar.DAY_OF_YEAR);
+    int diaDoAnoHoje = hoje.get(Calendar.DAY_OF_YEAR);
+    if (diaDoAnoNascimento > diaDoAnoHoje) {
       difAnos--;
     }
     return difAnos;
